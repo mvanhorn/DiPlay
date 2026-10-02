@@ -1,5 +1,7 @@
 package com.shilapi.xcertplay.orchestration
 
+import com.shilapi.xcertplay.transport.Iap2IdentificationConfig
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -17,5 +19,26 @@ class ManualHotspotConfigTest {
         assertFalse(isManualHotspotChannelCompatible(ManualHotspotBand.GHZ_2_4, 36))
         assertTrue(isManualHotspotChannelCompatible(ManualHotspotBand.GHZ_5, 149))
         assertFalse(isManualHotspotChannelCompatible(ManualHotspotBand.GHZ_5, 11))
+    }
+
+    @Test
+    fun wiredManualAcceptsEmptyHotspotSsid() {
+        val config = CarPlayRuntimeConfig(
+            mfiTarget = MfiTarget.LOCAL,
+            identification = Iap2IdentificationConfig(
+                name = "test",
+                modelIdentifier = "test",
+                manufacturer = "test",
+                serialNumber = "test",
+                firmwareVersion = "1",
+                hardwareVersion = "1",
+                carPlayUsbInterfaceNumber = 3,
+            ),
+            transport = CarPlayTransport.WIRED,
+            wirelessHotspotMode = WirelessHotspotMode.MANUAL,
+            manualHotspotSsid = "",
+        )
+
+        assertEquals("", config.manualHotspotSsid)
     }
 }
